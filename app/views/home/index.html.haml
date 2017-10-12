@@ -1,5 +1,10 @@
 .container.col-lg-12
 	.jumbotron
 		%h3 Welcome to SalesBot
-		%a{ href: "https://www.google.com"} Get Started
-		=# render "job_postings"
+		.row
+			= form_tag(crawl_path , remote: :true) do 
+				.col-lg-3
+					= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
+				= submit_tag 'Get Started' , class: "btn btn-success"
+		#job_postings
+			

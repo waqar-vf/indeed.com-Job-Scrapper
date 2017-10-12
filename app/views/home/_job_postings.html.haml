@@ -1,22 +1,26 @@
-.container
-  %h2 Striped Rows
-  %p The .table-striped class adds zebra-stripes to a table:
-  %table.table.table-striped
-    %thead
+%h2 Job Postings
+%table.table.table-striped
+  %thead
+    %tr
+      %th Title
+      %th Company
+      %th City
+      %th State
+      %th Posted date
+      %th
+      %th
+      %th
+  %tbody
+    - @jobs.each do |job|
       %tr
-        %th Firstname
-        %th Lastname
-        %th Email
-    %tbody
-      %tr
-        %td John
-        %td Doe
-        %td john@example.com
-      %tr
-        %td Mary
-        %td Moe
-        %td mary@example.com
-      %tr
-        %td July
-        %td Dooley
-        %td july@example.com
+        %td= job.title
+        %td= job.company
+        %td= job.city
+        %td= job.state
+        %td= job.posted_date
+        %td= link_to 'Show', job
+        %td= link_to 'Edit', edit_job_path(job)
+        %td= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' }
+%br
+
+= link_to 'New Job', new_job_path
