@@ -1,3 +1,4 @@
+=link_to "Download CSV" , "" , class: "pull-right"
 %h2 Job Postings
 %table.table.table-striped
   %thead
@@ -18,9 +19,4 @@
         %td= job.city
         %td= job.state
         %td= job.posted_date
-        %td= link_to 'Show', job
-        %td= link_to 'Edit', edit_job_path(job)
-        %td= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' }
 %br
-
-= link_to 'New Job', new_job_path
