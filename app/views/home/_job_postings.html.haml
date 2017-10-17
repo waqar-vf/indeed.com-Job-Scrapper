@@ -1,10 +1,11 @@
-=link_to "Download CSV" , "" , class: "pull-right"
+=#link_to "Download CSV" , "" , class: "pull-right"
 %h2 Job Postings
 %table.table.table-striped
   %thead
     %tr
       %th Title
       %th Company
+      %th Web Address
       %th City
       %th State
       %th Posted date
@@ -16,7 +17,9 @@
       %tr
         %td= job.title
         %td= job.company
+        %td= link_to "visit Company website" , web_address_path(job.company), remote: :true
         %td= job.city
         %td= job.state
         %td= job.posted_date
 %br
+
