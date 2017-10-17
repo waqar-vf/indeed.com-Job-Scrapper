@@ -49,7 +49,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'mechanize'
-  gem 'devise'
+  
 
 end 
 
@@ -63,3 +63,4 @@ gem 'phantomjs'
 gem 'phantom_mechanize'
 gem 'httparty'
 gem 'clearbit'
+gem 'devise'
