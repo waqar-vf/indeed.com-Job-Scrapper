@@ -16,6 +16,7 @@ gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+gem 'devise'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -39,6 +40,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'devise'
 end
 
 group :development do
@@ -49,6 +51,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'mechanize'
+  gem 'devise'
   
 
 end 
@@ -62,6 +65,4 @@ gem 'poltergeist'
 gem 'phantomjs'
 gem 'phantom_mechanize'
 gem 'httparty'
-gem 'clearbit'
-gem 'devise'
 gem 'emailhunter'
