@@ -16,7 +16,6 @@ class HomeController < ApplicationController
 		form['q'] = params[:company_name].to_s
 		result = form.submit
 		link = result.search('cite').first.text.strip
-		# render js: "alert('#{link}')"
 		link = "http://" + link if !link.include? 'http'
 		render js: "window.open('#{link}');"
 	end
@@ -30,7 +29,6 @@ class HomeController < ApplicationController
 		search_form['l'] = params[:crawl][:city]
 		results_page = search_form.submit
 		paginate_through results_page
-		#--------------
 		i = 2
 		loop do
 			break if results_page.link_with(text: "#{i.to_s}").nil?
@@ -38,9 +36,6 @@ class HomeController < ApplicationController
 			i = i + 1
 			paginate_through results_page
 		end
-		# results_page2 = results_page.link_with(text: '2').click
-		# paginate_through results_page2
-
 	end
 	def paginate_through page 
 		get_page_data page
@@ -50,6 +45,7 @@ class HomeController < ApplicationController
 			j = Job.new
 			j.initialize_job(job)
 			@jobs  <<  j
+			j.save!
 		end
 	end
 
