@@ -67,7 +67,7 @@ gem 'phantom_mechanize'
 gem 'httparty'
 gem 'emailhunter'
 
-group :development do
+group :production do
   gem "haml-rails", "~> 1.0"
   gem 'bootstrap-sass', '~> 3.3.6'
   gem 'jquery-rails'
