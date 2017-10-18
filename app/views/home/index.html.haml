@@ -2,12 +2,12 @@
 	.jumbotron
 		%h3 Welcome to SalesBot
 		.row
-			= form_tag(crawl_path , remote: :true) do 
+			= form_tag(crawl_path , remote: :true , id: "search_form") do 
 				.col-lg-3
 					= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
 				.col-lg-3
 					= text_field_tag 'crawl[city]' ,"", class: 'form-control' , placeholder: "Enter City/State"
-				= submit_tag 'Get Started' , class: "btn btn-success"
+				= submit_tag 'Get Started' , class: "btn btn-success" , onclick: "return show_waiting_bar();"
 		/ .tagged_search
 		/ 	%h2 
 		/ 		Tagged Search

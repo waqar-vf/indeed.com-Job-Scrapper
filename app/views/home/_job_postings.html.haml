@@ -17,9 +17,8 @@
       %tr
         %td= job.title
         %td= job.company
-        %td= link_to "visit Company website" , web_address_path(job.company), remote: :true
+        %td= job.company.present? ? (link_to "visit Company website" , web_address_path(job.company), remote: :true) : ""
         %td= job.city
         %td= job.state
         %td= job.posted_date
 %br
-

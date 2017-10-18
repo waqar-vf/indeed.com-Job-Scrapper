@@ -30,6 +30,17 @@ class HomeController < ApplicationController
 		search_form['l'] = params[:crawl][:city]
 		results_page = search_form.submit
 		paginate_through results_page
+		#--------------
+		i = 2
+		loop do
+			break if results_page.link_with(text: "#{i.to_s}").nil?
+			results_page = results_page.link_with(text: "#{i.to_s}").click
+			i = i + 1
+			paginate_through results_page
+		end
+		# results_page2 = results_page.link_with(text: '2').click
+		# paginate_through results_page2
+
 	end
 	def paginate_through page 
 		get_page_data page
