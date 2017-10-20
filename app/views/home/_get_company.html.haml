@@ -1,0 +1,14 @@
+.modal-dialog{:role => "document"}
+  .modal-content
+    .modal-header
+      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"}
+      %h4.modal-title Edit Company
+    .modal-body
+      =form_for(@company) do |f|
+        = f.label :web_address
+        = f.text_field :web_address , :label =>true
+        = f.submit "submit"
+    .modal-footer
+      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+      %button.btn.btn-primary{:type => "button"} Save changes

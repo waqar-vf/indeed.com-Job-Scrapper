@@ -2,6 +2,9 @@ require 'crawl'
 class HomeController < ApplicationController
 	before_action :set_agent, only: [:web_address , :crawl , :get_domains]
 	include Crawl
+	def index
+		@batch = Batch.last
+	end
 	def crawl 
 		get_data params
 		respond_to do |format|
@@ -27,7 +30,13 @@ class HomeController < ApplicationController
 		render js: "window.open('#{link}');"
 	end
 
-
+	def get_company
+		@company = Company.find_by_id(params[:id])
+		respond_to do |format|
+			format.js
+			format.html
+		end
+	end
 	private
 	def get_data params
 		@jobs  = []

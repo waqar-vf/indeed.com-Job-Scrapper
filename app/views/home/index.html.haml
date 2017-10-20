@@ -16,4 +16,5 @@
 		/ 		= link_to "Node js" , "" , remote: :true
 		/ 		= link_to "PHP" , "" , remote: :true
 		#job_postings
+			= render :partial => "home/job_postings" , locals:{jobs: @batch.jobs}
 		
