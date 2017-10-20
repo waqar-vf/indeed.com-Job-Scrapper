@@ -1,4 +1,8 @@
 =#link_to "Download CSV" , "" , class: "pull-right"
+.row  
+  %h3 Data Operations
+  .col-lg-3
+    = link_to "Get Domains" , get_domains_path , class: "btn btn-info" , remote: :true , onclick: "return show_waiting_bar();"
 %h2 Job Postings
 %table.table.table-striped
   %thead
@@ -9,16 +13,18 @@
       %th City
       %th State
       %th Posted date
-      %th
+      %th Company Domain
       %th
       %th
   %tbody
     - @jobs.each do |job|
+      - company_name = job.company.present?  ? job.company.name.present?  ?  job.company.name : "" : "" 
       %tr
         %td= job.title
-        %td= job.company
-        %td= job.company.present? ? (link_to "visit Company website" , web_address_path(job.company), remote: :true) : ""
+        %td= company_name
+        %td= company_name.present? ?  (link_to "visit Company website" , web_address_path(company_name), remote: :true) : ""
         %td= job.city
         %td= job.state
         %td= job.posted_date
+        %td= job.company.present?  ? job.company.web_address.to_s : ""
 %br

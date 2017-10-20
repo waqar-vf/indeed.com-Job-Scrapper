@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root "home#index"
   match "/home/crawl",  via: [ :post] , as: :crawl
   get	"/home/web_address/:company_name" => "home#web_address", as: :web_address
+  match "/home/get_domains" ,via: [:get], as: :get_domains
 end
