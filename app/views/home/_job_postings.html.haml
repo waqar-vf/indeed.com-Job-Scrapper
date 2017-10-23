@@ -4,6 +4,8 @@
   %h3 Data Operations
   .col-lg-3
     = link_to "Get Domains" , get_domains_path , class: "btn btn-info" , remote: :true , onclick: "return show_waiting_bar();"
+  .col-lg-2
+    = select_tag "Batches", options_from_collection_for_select(@batches, "id", "search_params" ), class: "form-control",:prompt => "Select Batch"
 %h2 Job Postings
 %table.table.table-striped
   %thead

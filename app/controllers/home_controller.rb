@@ -1,9 +1,10 @@
 require 'crawl'
 class HomeController < ApplicationController
 	before_action :set_agent, only: [:web_address , :crawl , :get_domains]
+	before_action :set_batch, only: [:index , :get_domains ,:crawl]
 	include Crawl
 	def index
-		@batch = Batch.last
+		@batches = Batch.all
 	end
 	def crawl 
 		get_data params
@@ -15,7 +16,7 @@ class HomeController < ApplicationController
 		@jobs = Batch.last.jobs.includes(:company)
 		@jobs.each do |job|
 			if !job.company.web_address.present?
-				sleep rand(1..2)
+				delay 1..2
 				link = crawl_company_address job.company.name
 				job.company.update(web_address: link)
 			end
@@ -23,13 +24,11 @@ class HomeController < ApplicationController
 		respond_to do |format|
 			format.js { render :partial => "crawl"}
 		end
-
 	end
 	def web_address
 		link = crawl_company_address params[:company_name].to_s
 		render js: "window.open('#{link}');"
 	end
-
 	def get_company
 		@company = Company.find_by_id(params[:id])
 		respond_to do |format|
@@ -40,18 +39,18 @@ class HomeController < ApplicationController
 	private
 	def get_data params
 		@jobs  = []
-		# @company_names||= Company.all.pluck(:id, :name).to_h
 		home_page = @agent.get(job_site_url)
 		search_form = home_page.forms.first
 		search_form['q'] = params[:crawl][:keyword]
 		search_form['l'] = params[:crawl][:city]
 		results_page = search_form.submit
-		@batch =  Batch.create!(query: params[:crawl][:keyword] , city: params[:crawl][:city])
+		@batch =  Batch.find_or_create_by!(query: params[:crawl][:keyword].downcase , city: params[:crawl][:city].downcase)
 		paginate_through results_page
 		i = 2
 		loop do
 			break if results_page.link_with(text: "#{i.to_s}").nil?
 			results_page = results_page.link_with(text: "#{i.to_s}").click
+			delay 1..2
 			i = i + 1
 			paginate_through results_page
 		end
@@ -79,5 +78,11 @@ class HomeController < ApplicationController
 		link = website_address.present? ? website_address.text.strip : ""
 		link = "http://" + link if (link.present? and !link.include? 'http')
 		link
+	end
+	def set_batch
+		@batches = Batch.all
+	end
+	def delay secs
+		sleep rand(secs)
 	end
 end
