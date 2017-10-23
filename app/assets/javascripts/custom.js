@@ -1,3 +1,3 @@
 function show_waiting_bar(){
-	$("#waiting_bar").modal("show")
+    $("#waiting_bar").modal("show")
 }

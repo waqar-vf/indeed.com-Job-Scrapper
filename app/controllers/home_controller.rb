@@ -5,6 +5,7 @@ class HomeController < ApplicationController
 	include Crawl
 	def index
 		@batches = Batch.all
+		@active_batch = @batches.last
 	end
 	def crawl 
 		get_data params
@@ -36,6 +37,26 @@ class HomeController < ApplicationController
 			format.html
 		end
 	end
+	def domain_search
+		access_token = DomainSearch.access_token
+		@company = Company.find(params[:id])
+		web_address = @company.web_address
+		web_address = Addressable::URI.parse(web_address).host.to_s
+		web_address.slice! "www."
+		@emails = DomainSearch.get_emails web_address , access_token
+		@domain_search = @company.domain_searches.find_or_create_by!(domain: web_address)
+		@emails["emails"].each do |email|
+			@domain_search.emails.find_or_create_by(email: email["email"]) do |email_row|
+				email_row.type = email["type"]
+				email_row.status = email["status"]
+				email_row.first_name = email["firstName"]
+				email_row.last_name = email["lastName"]
+				email_row.position = email["position"]
+				email_row.source_page = email["sourcePage"]
+				email_row.twitter = email["twitter"]
+			end
+		end
+	end
 	private
 	def get_data params
 		@jobs  = []
@@ -50,7 +71,7 @@ class HomeController < ApplicationController
 		loop do
 			break if results_page.link_with(text: "#{i.to_s}").nil?
 			results_page = results_page.link_with(text: "#{i.to_s}").click
-			delay 1..2
+			# delay 1..2
 			i = i + 1
 			paginate_through results_page
 		end
@@ -65,7 +86,9 @@ class HomeController < ApplicationController
 			posted_date  = 		job_section.search(".date").text.strip
 			title 		   = 		job_section.search(".jobtitle").text.strip
 			@company     =    Company.where(name: company).first_or_create
+			puts "---------------------------------------------------------------creating job--------------------"
 			job          =    Job.create!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
+
 			@jobs << job
 		end
 	end

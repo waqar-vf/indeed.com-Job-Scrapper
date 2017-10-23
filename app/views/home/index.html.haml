@@ -7,7 +7,7 @@
 					= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
 				.col-lg-3
 					= text_field_tag 'crawl[city]' ,"", class: 'form-control' , placeholder: "Enter City/State"
-				= submit_tag 'Get Started' , class: "btn btn-success" , onclick: "return show_waiting_bar();"
+				= submit_tag 'Get Started' , class: "btn btn-success" , onclick: "return show_waiting_bar();",data: {disable_with: 'loading...'}
 		#job_postings
 			= render :partial => "home/job_postings" , locals:{jobs: @batches.last.present?  ? @batches.last.jobs : []  }
 		
