@@ -1,0 +1,35 @@
+kk
+.modal-dialog{:role => "document"}
+  .modal-content
+    .modal-header
+      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} x
+      %h4.modal-title
+        = @emails.first.domain_search.domain.to_s + " Contacts"
+    .modal-body
+      %table.table
+        %thead
+          %tr
+            %th email
+            %th Position
+            %th Type
+            %th Status
+            %th First Name
+            %th last Name
+            %th Source Page
+            %th Twitter Handle
+        %tbody.test
+          - @emails.each do |email|
+            %tr
+              %td= email.email
+              %td= email.position
+              %td= email.address_type
+              %td= email.status
+              %td= email.first_name
+              %td= email.last_name
+              %td= email.source_page
+              %td= email.twitter
+
+    .modal-footer
+      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+      %button.btn.btn-primary{:type => "button"} Save changes

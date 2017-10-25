@@ -1,11 +1,11 @@
 require 'crawl'
+require 'csv'
 class HomeController < ApplicationController
 	before_action :set_agent, only: [:web_address , :crawl , :get_domains]
 	before_action :set_batch, only: [:index , :get_domains ,:crawl]
 	include Crawl
 	def index
-		@batches = Batch.all
-		@active_batch = @batches.last
+    @jobs = @active_batch.present? ? @active_batch.jobs : nil
 	end
 	def crawl 
 		get_data params
@@ -37,25 +37,27 @@ class HomeController < ApplicationController
 			format.html
 		end
 	end
-	def domain_search
-		access_token = DomainSearch.access_token
+	def get_emails
 		@company = Company.find(params[:id])
-		web_address = @company.web_address
-		web_address = Addressable::URI.parse(web_address).host.to_s
-		web_address.slice! "www."
-		@emails = DomainSearch.get_emails web_address , access_token
-		@domain_search = @company.domain_searches.find_or_create_by!(domain: web_address)
-		@emails["emails"].each do |email|
-			@domain_search.emails.find_or_create_by(email: email["email"]) do |email_row|
-				email_row.type = email["type"]
-				email_row.status = email["status"]
-				email_row.first_name = email["firstName"]
-				email_row.last_name = email["lastName"]
-				email_row.position = email["position"]
-				email_row.source_page = email["sourcePage"]
-				email_row.twitter = email["twitter"]
-			end
+		if @company.domain_search.present?
+			@emails = @company.domain_search.emails
+		else
+			@emails = @company.create_domain_search
 		end
+		respond_to do |format|
+			format.js
+		end
+	end
+	def csv_download
+    @batch = params[:batch_id].present? ? Batch.find_by_id(params[:batch_id]) : Batch.last
+    @jobs = @batch.jobs.includes(company: {domain_search: :emails})
+		respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"Contacts-list.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+
+      end
 	end
 	private
 	def get_data params
@@ -103,7 +105,9 @@ class HomeController < ApplicationController
 		link
 	end
 	def set_batch
-		@batches = Batch.all
+    @batches =  Batch.all
+    @active_batch = params[:batch_id].present? ? Batch.find_by_id(params[:batch_id]) :  @batches.last
+
 	end
 	def delay secs
 		sleep rand(secs)

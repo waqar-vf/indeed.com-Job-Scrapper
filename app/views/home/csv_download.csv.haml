@@ -1,0 +1,13 @@
+-#<%- headers = ['Name', 'Email'] -%>
+-#<%= CSV.generate_line headers %>
+-#<%- @users.each do |user| -%>
+-#<%= CSV.generate_line([user.name, user.email]) -%>
+-#<%- end -%>
+
+- headers = ["Title", "State" , "City" , "Posted Data" , "Email" , "Position" , "Status", "First Name" , "Last Name", "Twitter"]
+= CSV.generate_line headers
+- @jobs.each do |job|
+  - arr = []
+  -if job.company.domain_search.present?
+    - job.company.domain_search.emails.each do |email|
+      = CSV.generate_line [job.title , job.city , job.state , job.posted_date, email.email ,email.position ,email.status,email.first_name,email.last_name,email.twitter, email.address_type]

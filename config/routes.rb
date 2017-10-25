@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   get	"/home/web-address/:company_name" => "home#web_address", as: :web_address
   match "/home/get-domains" ,via: [:get], as: :get_domains
   get "/home/get_company/:id" => "home#get_company", as: :get_company
-  get "/home/domain-search/:id" => "home#domain_search", as: :domain_search
+  get "/home/get-emails/:id" => "home#get_emails", as: :get_emails
+  get "/home/csv-download/:batch_id" => "home#csv_download", as: :csv_download
+  get "/:batch_id"=> "home#index"
 end

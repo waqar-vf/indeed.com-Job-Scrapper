@@ -6,6 +6,8 @@
 	= csrf_meta_tags
 	= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
 	= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+	-#%link{:href => "DataTables/datatables.css", :rel => "stylesheet", :type => "text/css"}/
+	-#%script{:src => "DataTables/datatables.js", :type => "text/javascript"}
 	%body
 	= render "layouts/nav_bar"
 	= render "layouts/waiting_bar"
