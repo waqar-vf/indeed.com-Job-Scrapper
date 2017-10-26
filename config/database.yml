@@ -81,5 +81,6 @@ test:
 production:
   <<: *default
   database: salesbot_production
+  adapter: postgresql
   username: salesbot
   password: <%= ENV['SALESBOT_DATABASE_PASSWORD'] %>

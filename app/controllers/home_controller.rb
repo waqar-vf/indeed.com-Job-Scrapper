@@ -48,6 +48,13 @@ class HomeController < ApplicationController
 			format.js
 		end
 	end
+	def get_all_emails
+		@batch = Batch.find_by_id(:batch_id)
+		
+		respond_to do |format|
+			format.js
+		end
+	end
 	def csv_download
     @batch = params[:batch_id].present? ? Batch.find_by_id(params[:batch_id]) : Batch.last
     @jobs = @batch.jobs.includes(company: {domain_search: :emails})

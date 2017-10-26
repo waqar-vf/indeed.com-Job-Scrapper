@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   match "/home/get-domains" ,via: [:get], as: :get_domains
   get "/home/get_company/:id" => "home#get_company", as: :get_company
   get "/home/get-emails/:id" => "home#get_emails", as: :get_emails
+  get "/home/get-all-emails/:batch_id" => "home#get_all_emails", as: :get_all_emails
   get "/home/csv-download/:batch_id" => "home#csv_download", as: :csv_download
   get "/:batch_id"=> "home#index"
+  post "/companies/import-csv" => "companies#import_csv", as: :import_csv
+
 end

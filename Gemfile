@@ -78,3 +78,6 @@ group :production do
   gem 'emailhunter'
   gem 'mechanize'
 end
+
+gem "roo"
+gem 'rails_12factor', group: :production

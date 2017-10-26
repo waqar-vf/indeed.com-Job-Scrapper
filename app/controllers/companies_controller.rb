@@ -20,7 +20,16 @@ class CompaniesController < ApplicationController
   # GET /companies/1/edit
   def edit
   end
+  def import_csv
+    begin
+    Company.import(params[:file])
+    render js: "alert('import Successfull')"
+    rescue
+      render js: "alert('Something went wrong')"
+    end
 
+    # abort("=-------------------------")
+  end
   # POST /companies
   # POST /companies.json
   def create

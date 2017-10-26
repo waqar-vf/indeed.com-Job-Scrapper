@@ -1,14 +1,17 @@
 require 'snovio'
 class Company < ApplicationRecord
-  has_many :jobs
-  has_one :domain_search
+  has_many :jobs ,dependent: :destroy
+  has_one :domain_search ,dependent: :destroy
   def create_domain_search
 
     access_token = Snovio.get_access_token
-    self.domain_search = DomainSearch.new(domain: self.trim_web_address) #find_or_initialize_by here WAQAR
+    self.domain_search = DomainSearch.find_or_initialize_by(domain: self.trim_web_address) #find_or_initialize_by here WAQAR
     domain_search = self.domain_search
+    # WARING please check if API call is needed here WAQAR
+    #At snovio same domain address can be called multiple times without affecting remaining credit
+    puts "-++++++++++++++++++++++----#{domain_search.inspect}-----++++++++++++++++++++++++++++++++"
     @emails = Snovio.get_emails domain_search.domain , access_token
-    @domain_search = @company.domain_search.find_or_create_by!(domain: web_address)
+    puts "7666666666666666666666666666666666666666666666666666"
     @emails["emails"].each do |email|
       	domain_search.emails.find_or_create_by(email: email["email"]) do |email_row|
       		email_row.address_type = email["type"]
@@ -20,14 +23,35 @@ class Company < ApplicationRecord
       		email_row.twitter = email["twitter"]
       	end
     end
+    puts "************************************"
     domain_search.emails
   end
   def trim_web_address
-    web_address = Addressable::URI.parse(self.web_address).host.to_s
+    puts "00000000000000000000000---#{self.web_address}------#{self.web_address.to_s.include?("http")}----00000000000000000000000000000"
+    web_address = self.web_address.include?("http") ?  (Addressable::URI.parse(self.web_address).host.to_s) : (self.web_address)
+    puts "---++++  #{web_address}========"
     web_address.slice! "www."
+    puts "---------------#{web_address}---------------"
     web_address
   end
   def self.check
     Snovio.get_access_token
+  end
+  def self.import file
+    # raise "somthing went"
+    xlsx = Roo::Spreadsheet.open(file)
+    spreadsheet = xlsx.sheet(0)
+    company_name = spreadsheet.row(1).first
+    company_url = spreadsheet.row(1).second
+    spreadsheet.each(c: company_name, u: company_url) do |row|
+      this_company = find_or_create_by!(:name => row[:c] ) do |company|
+        company.web_address = row[:u]
+        # company.create_domain_search
+      end
+      puts "-------kkk---#{this_company.inspect}------"
+      this_company.create_domain_search
+
+    end
+
   end
 end

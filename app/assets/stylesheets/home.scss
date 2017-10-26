@@ -6,43 +6,49 @@ h1 {
 	background-color: aliceblue;
 }
 .mt-150 {
-  margin-top: 150px;
+  margin-top: 120px;
 }
 #get_emails .modal-dialog {
   width: 60%;
   //height: 400px !important;
 
 }
-#get_emails {
+.kk {
+  margin-top: 6px;
+}
+#gmet_emails {
   height: 400px !important;
 }
-
-body{
-  background-color: #bdc3c7;
+.modal-body.emails-table {
+  overflow: auto;
+  max-height: 600px;
 }
-.table-fixed{
-  width: 100%;
-  background-color: #f3f3f3;
-  tbody{
-    height:200px;
-    overflow-y:auto;
-    width: 100%;
-  }
-  thead,tbody,tr,td,th{
-    display:block;
-  }
-  tbody{
-    td{
-      float:left;
-    }
-  }
-  thead {
-    tr{
-      th{
-        float:left;
-        background-color: #f39c12;
-        border-color:#e67e22;
-      }
-    }
-  }
-}
+//body{
+//  background-color: #bdc3c7;
+//}
+//.table-fixed{
+//  width: 100%;
+//  background-color: #f3f3f3;
+//  tbody{
+//    height:200px;
+//    overflow-y:auto;
+//    width: 100%;
+//  }
+//  thead,tbody,tr,td,th{
+//    display:block;
+//  }
+//  tbody{
+//    td{
+//      float:left;
+//    }
+//  }
+//  thead {
+//    tr{
+//      th{
+//        float:left;
+//        background-color: #f39c12;
+//        border-color:#e67e22;
+//      }
+//    }
+//  }
+//}

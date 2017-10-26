@@ -1,12 +1,11 @@
-kk
 .modal-dialog{:role => "document"}
   .modal-content
     .modal-header
       %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
         %span{"aria-hidden" => "true"} x
       %h4.modal-title
-        = @emails.first.domain_search.domain.to_s + " Contacts"
-    .modal-body
+        = (@emails.first.present?  ? @emails.first.domain_search.domain.to_s : "<empty>" )+ " Contacts"
+    .modal-body.emails-table
       %table.table
         %thead
           %tr

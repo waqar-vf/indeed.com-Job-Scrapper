@@ -1,14 +1,18 @@
+.col-lg-6#settings
+
+%br
+  -#= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
 - @jobs = jobs if (!@jobs.present? and jobs.present?)
 - if @jobs.present?
-  .row
-    %h3 Data Operations
-    .col-lg-3
-      = link_to "Get Domains" , get_domains_path , class: "btn btn-info" , remote: :true , onclick: "return show_waiting_bar();"
-    .col-lg-2
-      - if @active_batch.present?
-        = select_tag "Batches", options_from_collection_for_select(@batches, "id", "search_params",@active_batch.id), class: "form-control",onchange: "return get_batch();",:prompt => "Select Batch"
+  = link_to "Get Domains" , get_domains_path , class: "btn btn-danger pull-right" , remote: :true , onclick: "return show_waiting_bar();"
+
   - if @active_batch.present?
-    =link_to "Download CSV" , csv_download_path(@active_batch.id, format: :csv) , class: "btn btn-info pull-right"
+    = link_to "Get all Emails", get_all_emails_path(@active_batch.id), class: "btn btn-info pull-right" , remote: :true , onclick: "return show_waiting_bar();"
+    =link_to "Download CSV" , csv_download_path(@active_batch.id, format: :csv) , class: "btn btn-primary pull-right"
+    .col-lg-3.pull-right
+      = select_tag "Batches", options_from_collection_for_select(@batches, "id", "search_params",@active_batch.id), class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
+    %label.control-label.pull-right.kk{for: "Batches"} Select Batch
+
   %h2 Job Postings
   %table.table.table-striped
     %thead
@@ -36,7 +40,6 @@
             = job.company.present?  ? (link_to job.company.web_address.to_s , job.company.web_address.to_s ,target: :_blank) : ""
             = job.company.present?  ? (link_to "Edit Company", edit_company_path(company_id), class: "btn btn-warning pull-right ") : ""
           %td
-            = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Contacts" ,get_emails_path(company_id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
-
+            = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company_id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
 
   %br
