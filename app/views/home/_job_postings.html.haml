@@ -2,7 +2,7 @@
 
 %br
   -#= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
-- @jobs = jobs if (!@jobs.present? and jobs.present?)
+- @jobs = jobs if (!@jobs.present? and defined?jobs and jobs.present?)
 - if @jobs.present?
   = link_to "Get Domains" , get_domains_path , class: "btn btn-danger pull-right" , remote: :true , onclick: "return show_waiting_bar();"
 
