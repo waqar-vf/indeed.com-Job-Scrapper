@@ -104,7 +104,9 @@ class HomeController < ApplicationController
 			city 		 		 = 		job_section.search(".location").text.strip
 			posted_date  = 		job_section.search(".date").text.strip
 			title 		   = 		job_section.search(".jobtitle").text.strip
-			@company     =    Company.where(name: company).first_or_create
+			@company     =    Company.where(name: company).first_or_create do |comp|
+				comp.batch_id = @batch.id
+			end
 			job          =    Job.create!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
 
 			@jobs << job

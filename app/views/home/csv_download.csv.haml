@@ -8,13 +8,15 @@
 = CSV.generate_line headers
 - @jobs.each do |job|
   -if job.company.present? and job.company.domain_search.present?
-    = CSV.generate_line [job.title.to_s.strip, job.city.to_s.strip, job.posted_date.to_s.strip]
+    =  [job.title.present? ? job.title.tr(',','') : "-",
+                         job.city.present? ? job.city.tr(',','') : "-",
+                         job.posted_date.present? ?  job.posted_date.tr(',','') : "-"].to_csv(row_sep: nil)
     - job.company.domain_search.emails.each do |email|
-      = CSV.generate_line ["-","-","-",
-                                  email.email.present? ? email.email.to_s  : "-"  ,
-                                  email.position.present? ? email.position.to_s  : "-" ,
-                                  email.status.present? ? email.status.to_s  : "-",
-                                  email.first_name.present? ? email.first_name.to_s  : "-",
-                                  email.last_name.present? ? email.last_name.to_s  : "-",
-                                  email.twitter.present? ? email.twitter.to_s  : "-",
-                                  email.address_type.present? ? email.address_type.to_s  : "-"]
+      = ["-","-","-",
+                                  email.email.present? ? email.email.to_s.tr(',','')  : "-"  ,
+                                  email.position.present? ? email.position.to_s.tr(',','')  : "-" ,
+                                  email.status.present? ? email.status.to_s.tr(',','')  : "-",
+                                  email.first_name.present? ? email.first_name.to_s.tr(',','')  : "-",
+                                  email.last_name.present? ? email.last_name.to_s.tr(',','')  : "-",
+                                  email.twitter.present? ? email.twitter.to_s.tr(',','')  : "-",
+                                  email.address_type.present? ? email.address_type.to_s.tr(',','')  : "-" ].to_csv( row_sep: nil )

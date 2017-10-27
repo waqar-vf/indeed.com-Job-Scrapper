@@ -2,6 +2,7 @@ require 'snovio'
 class Company < ApplicationRecord
   has_many :jobs ,dependent: :destroy
   has_one :domain_search ,dependent: :destroy
+  belongs_to :batch
   def create_domain_search
 
     access_token = Snovio.get_access_token
