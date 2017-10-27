@@ -4,10 +4,17 @@
 -#<%= CSV.generate_line([user.name, user.email]) -%>
 -#<%- end -%>
 
-- headers = ["Title", "State" , "City" , "Posted Data" , "Email" , "Position" , "Status", "First Name" , "Last Name", "Twitter"]
+- headers = ["Title" , "City" , "Posted Data" , "Email" , "Position" , "Status", "First Name" , "Last Name", "Twitter","Email Type"]
 = CSV.generate_line headers
 - @jobs.each do |job|
-  - arr = []
-  -if job.company.domain_search.present?
+  -if job.company.present? and job.company.domain_search.present?
+    = CSV.generate_line [job.title.to_s.strip, job.city.to_s.strip, job.posted_date.to_s.strip]
     - job.company.domain_search.emails.each do |email|
-      = CSV.generate_line [job.title , job.city , job.state , job.posted_date, email.email ,email.position ,email.status,email.first_name,email.last_name,email.twitter, email.address_type]
+      = CSV.generate_line ["-","-","-",
+                                  email.email.present? ? email.email.to_s  : "-"  ,
+                                  email.position.present? ? email.position.to_s  : "-" ,
+                                  email.status.present? ? email.status.to_s  : "-",
+                                  email.first_name.present? ? email.first_name.to_s  : "-",
+                                  email.last_name.present? ? email.last_name.to_s  : "-",
+                                  email.twitter.present? ? email.twitter.to_s  : "-",
+                                  email.address_type.present? ? email.address_type.to_s  : "-"]

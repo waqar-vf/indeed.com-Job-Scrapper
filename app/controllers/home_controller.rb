@@ -15,12 +15,16 @@ class HomeController < ApplicationController
 	end
 	def get_domains
 		@jobs = Batch.last.jobs.includes(:company)
-		@jobs.each do |job|
-			if !job.company.web_address.present?
-				delay 1..2
-				link = crawl_company_address job.company.name
-				job.company.update(web_address: link)
+		begin
+			@jobs.each do |job|
+				if !job.company.web_address.present?
+					delay 1..2
+					link = crawl_company_address job.company.name
+					job.company.update(web_address: link)
+				end
 			end
+		rescue
+			render js: "alert('something went wrong')"
 		end
 		respond_to do |format|
 			format.js { render :partial => "crawl"}
@@ -39,18 +43,23 @@ class HomeController < ApplicationController
 	end
 	def get_emails
 		@company = Company.find(params[:id])
-		if @company.domain_search.present?
-			@emails = @company.domain_search.emails
-		else
-			@emails = @company.create_domain_search
-		end
+		@emails = get_domain_search_emails @company
 		respond_to do |format|
 			format.js
 		end
 	end
 	def get_all_emails
-		@batch = Batch.find_by_id(:batch_id)
-		
+		@batch = Batch.find_by_id(params[:batch_id])
+		puts "Batch GOT"
+		begin
+			puts "begin"
+			@batch.jobs.each do |job|
+				get_domain_search_emails job.company
+			end
+			render js: "get_all_emails_success();"
+		rescue
+			render js: "something went wrong();"
+		end
 		respond_to do |format|
 			format.js
 		end
@@ -67,6 +76,7 @@ class HomeController < ApplicationController
       end
 	end
 	private
+
 	def get_data params
 		@jobs  = []
 		home_page = @agent.get(job_site_url)
@@ -95,7 +105,6 @@ class HomeController < ApplicationController
 			posted_date  = 		job_section.search(".date").text.strip
 			title 		   = 		job_section.search(".jobtitle").text.strip
 			@company     =    Company.where(name: company).first_or_create
-			puts "---------------------------------------------------------------creating job--------------------"
 			job          =    Job.create!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
 
 			@jobs << job
@@ -118,5 +127,13 @@ class HomeController < ApplicationController
 	end
 	def delay secs
 		sleep rand(secs)
+	end
+	def get_domain_search_emails company
+		if company.domain_search.present?
+			emails = company.domain_search.emails
+		else
+			emails = company.create_domain_search
+		end
+		emails
 	end
 end
