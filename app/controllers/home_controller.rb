@@ -23,11 +23,11 @@ class HomeController < ApplicationController
 					job.company.update(web_address: link)
 				end
 			end
+			respond_to do |format|
+				format.js { render :partial => "crawl"}
+			end
 		rescue
 			render js: "alert('something went wrong')"
-		end
-		respond_to do |format|
-			format.js { render :partial => "crawl"}
 		end
 	end
 	def web_address
