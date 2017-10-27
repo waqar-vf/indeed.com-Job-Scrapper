@@ -9,9 +9,7 @@ class Company < ApplicationRecord
     domain_search = self.domain_search
     # WARING please check if API call is needed here WAQAR
     #At snovio same domain address can be called multiple times without affecting remaining credit
-    puts "-++++++++++++++++++++++----#{domain_search.inspect}-----++++++++++++++++++++++++++++++++"
     @emails = Snovio.get_emails domain_search.domain , access_token
-    puts "7666666666666666666666666666666666666666666666666666"
     @emails["emails"].each do |email|
       	domain_search.emails.find_or_create_by(email: email["email"]) do |email_row|
       		email_row.address_type = email["type"]
@@ -23,15 +21,11 @@ class Company < ApplicationRecord
       		email_row.twitter = email["twitter"]
       	end
     end
-    puts "************************************"
     domain_search.emails
   end
   def trim_web_address
-    puts "00000000000000000000000---#{self.web_address}------#{self.web_address.to_s.include?("http")}----00000000000000000000000000000"
     web_address = self.web_address.include?("http") ?  (Addressable::URI.parse(self.web_address).host.to_s) : (self.web_address)
-    puts "---++++  #{web_address}========"
     web_address.slice! "www."
-    puts "---------------#{web_address}---------------"
     web_address
   end
   def self.check
@@ -48,8 +42,9 @@ class Company < ApplicationRecord
         company.web_address = row[:u]
         # company.create_domain_search
       end
-      puts "-------kkk---#{this_company.inspect}------"
-      this_company.create_domain_search
++
+
+this_company.create_domain_search
 
     end
 
