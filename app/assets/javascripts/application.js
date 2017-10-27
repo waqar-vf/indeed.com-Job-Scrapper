@@ -25,11 +25,15 @@ function get_batch (obj){
     id = $(obj).val()
     window.top.location.href = "/"+id
 }
-function something_went_wrong() {
-    alert('Something went wrong. Please try again later');
+function something_went_wrong(stack_trace) {
+    if (stack_trace == 'undefined')
+    {
+        stack_trace = ". "
+    }
+    alert('Something went wrong. Please try again later \r\n Stack Trace:' + stack_trace);
     $("#waiting_bar").modal("hide")
 }
 function get_all_emails_success() {
-    alert("All emails for the current active batch are in the system. You can download csv now.")
+    alert("Emails are saved successfully in system for currently active batch. \r\n You can download csv now.")
     $("#waiting_bar").modal("hide")
 }

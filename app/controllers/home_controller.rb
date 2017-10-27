@@ -28,7 +28,8 @@ class HomeController < ApplicationController
 			end
 		rescue => error
 			$!.backtrace
-			render js: "something went wrong();"
+
+			render js: "something_went_wrong(#{error.inspect});"
 		end
 	end
 	def web_address
@@ -58,8 +59,10 @@ class HomeController < ApplicationController
 				get_domain_search_emails job.company
 			end
 			render js: "get_all_emails_success();"
-		rescue
-			render js: "something went wrong();"
+		rescue => error
+			$!.backtrace
+			puts "----------------#{error.inspect}-------------"
+			render js: "something_went_wrong( 'Please make sure to get all domains first!' );"
 		end
 		respond_to do |format|
 			format.js
