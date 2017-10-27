@@ -1,5 +1,9 @@
 .container.col-lg-12
-  %nav.navbar.navbar-inverse.bg-inverse
+  %nav.navbar.navbar-inverse.bg-primary
     / %button.navbar-toggler.navbar-toggler-right{"aria-controls" => "navbarNav", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarNav", "data-toggle" => "collapse", :type => "button"}
     %span.navbar-toggler-icon
     %a.navbar-brand{:href => "/"} SalesBot
+    - if current_user.present?
+      = link_to "Sign out",destroy_user_session_path , method: :delete , class: "navbar-brand pull-right"
+    -else
+      = link_to "Sign in",new_user_session_path , class: "navbar-brand pull-right"
