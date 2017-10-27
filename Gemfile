@@ -77,7 +77,7 @@ group :production do
   # gem 'phantom_mechanize'
   # gem 'httparty'
   # gem 'emailhunter'
-  # gem 'mechanize'
+  gem 'mechanize'
 end
 
 gem "roo"
