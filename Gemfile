@@ -68,15 +68,15 @@ gem 'httparty'
 gem 'emailhunter'
 
 group :production do
-  gem "haml-rails", "~> 1.0"
-  gem 'bootstrap-sass', '~> 3.3.6'
-  gem 'jquery-rails'
-  gem 'poltergeist'
-  gem 'phantomjs'
+  # gem "haml-rails", "~> 1.0"
+  # gem 'bootstrap-sass', '~> 3.3.6'
+  # gem 'jquery-rails'
+  # gem 'poltergeist'
+  # gem 'phantomjs'
   # gem 'phantom_mechanize'
-  gem 'httparty'
-  gem 'emailhunter'
-  gem 'mechanize'
+  # gem 'httparty'
+  # gem 'emailhunter'
+  # gem 'mechanize'
 end
 
 gem "roo"
