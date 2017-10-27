@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b65b5e95-52bb-45d3-9eb3-02d319f2f204" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/application.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/application.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
@@ -34,8 +35,8 @@
       <file leaf-file-name="home_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/home_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+            <state relative-caret-position="450">
+              <caret line="30" column="42" lean-forward="false" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -84,9 +85,11 @@
       <file leaf-file-name="application.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="34" column="1" lean-forward="true" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
-              <folding />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,8 +195,8 @@
         <option value="$PROJECT_DIR$/app/models/batch.rb" />
         <option value="$PROJECT_DIR$/app/models/company.rb" />
         <option value="$PROJECT_DIR$/app/views/home/csv_download.csv.haml" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/custom.js" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
         <option value="$PROJECT_DIR$/app/controllers/home_controller.rb" />
       </list>
     </option>
@@ -459,7 +462,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118239000" />
+    <option name="totallyTimeSpent" value="118689000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -849,14 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="34" column="1" lean-forward="true" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/companies_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
@@ -865,10 +860,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/home_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+        <state relative-caret-position="450">
+          <caret line="30" column="42" lean-forward="false" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
           <folding />
         </state>
       </provider>

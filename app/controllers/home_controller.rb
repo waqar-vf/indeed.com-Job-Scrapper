@@ -26,8 +26,9 @@ class HomeController < ApplicationController
 			respond_to do |format|
 				format.js { render :partial => "crawl"}
 			end
-		rescue
-			render js: "alert('something went wrong')"
+		rescue => error
+			$!.backtrace
+			render js: "something went wrong();"
 		end
 	end
 	def web_address
