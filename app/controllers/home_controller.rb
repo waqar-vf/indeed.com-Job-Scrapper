@@ -111,7 +111,7 @@ class HomeController < ApplicationController
 			@company     =    Company.where(name: company).first_or_create do |comp|
 				comp.batch_id = @batch.id
 			end
-			job          =    Job.create!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
+			job          =    Job.find_or_create_by!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
 
 			@jobs << job
 		end

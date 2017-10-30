@@ -16,7 +16,7 @@
         .col-lg-4.pull-right
           = submit_tag "Import CSV" , class: "btn"
     .col-lg-3.pull-right
-      = select_tag "Batches", options_from_collection_for_select(@batches, "id", "search_params",@active_batch.id), class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
+      = select_tag "Batches", options_from_collection_for_select(@batches, "id", "search_params",@active_batch.present? ? @active_batch.id : ""), class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
     %label.control-label.pull-right.kk{for: "Batches"} Select Batch
     %br
     %br
