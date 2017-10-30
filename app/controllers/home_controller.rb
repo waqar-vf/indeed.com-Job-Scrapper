@@ -128,6 +128,7 @@ class HomeController < ApplicationController
 	end
 	def set_batch
     @batches =  Batch.all
+		@unscoped_batches = Batch.unscoped.all
     @active_batch = params[:batch_id].present? ? Batch.find_by_id(params[:batch_id]) :  @batches.last
 
 	end

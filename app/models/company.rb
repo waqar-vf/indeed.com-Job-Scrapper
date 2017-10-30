@@ -37,15 +37,20 @@ class Company < ApplicationRecord
     Snovio.get_access_token
   end
   def self.import file
+    all_company_web_addresses = all.pluck(:web_address)
     xlsx = Roo::Spreadsheet.open(file)
     spreadsheet = xlsx.sheet(0)
     company_name = spreadsheet.row(1).first
     company_url = spreadsheet.row(1).second
+    batch = Batch.create(batch_type: "import")
     spreadsheet.each(c: company_name, u: company_url) do |row|
-      this_company = find_or_create_by!(:name => row[:c] ) do |company|
-        company.web_address = row[:u]
+      if !(all_company_web_addresses.include? row[:u] )
+        this_company = batch.companies.find_or_create_by!(:name => row[:c] ) do |company|
+          company.web_address = row[:u]
+        end
+
+        this_company.create_domain_search
       end
-    this_company.create_domain_search
     end
   end
 end

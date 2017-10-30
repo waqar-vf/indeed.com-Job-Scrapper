@@ -24,7 +24,8 @@ class CompaniesController < ApplicationController
     begin
     Company.import(params[:file])
     render js: "alert('import Successfull')"
-    rescue
+    rescue => error
+      puts "-------------+++++++#{error.inspect}-----------------------"
       render js: "alert('Something went wrong')"
     end
 

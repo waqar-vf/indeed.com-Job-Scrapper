@@ -3,9 +3,14 @@ class Batch < ApplicationRecord
 	has_many :companies
 	def search_params
 		# "#{query} , #{city}"
-		str = "#{query.capitalize}"
-		str = str + ", #{city.capitalize}" if city.present?
-		str
+		if batch_type == "import"
+			return "import xlsx #{created_at.strftime('%c')}"
+		else
+			str = "#{query.capitalize}"
+			str = str + ", #{city.capitalize}" if city.present?
+			str
+		end
+
 	end
 	def self.del
 		Batch.destroy_all
@@ -14,5 +19,6 @@ class Batch < ApplicationRecord
 		Job.destroy_all
 		Email.destroy_all
 	end
+	default_scope {where(:batch_type => "search")}
 
 end
