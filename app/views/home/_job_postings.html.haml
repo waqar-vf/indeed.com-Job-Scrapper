@@ -10,10 +10,15 @@
     = link_to "Get all Emails", get_all_emails_path(@active_batch.id), class: "btn btn-info pull-right" , remote: :true , onclick: "return show_waiting_bar();"
     =link_to "Download CSV" , csv_download_path(@active_batch.id, format: :csv) , class: "btn btn-primary pull-right"
 
-  %h2 Job Postings
+  %h2.col-lg-6
+    = @jobs.count
+    Jobs for
+    %i
+      = @jobs.first.batch.search_params
   %table.table.table-striped
     %thead
       %tr
+        %th Sr#
         %th Title
         %th Company
         -#%th Web Address
@@ -24,10 +29,12 @@
         %th See Contacts
         %th
     %tbody
-      - @jobs.each do |job|
+      - @jobs.each_with_index do |job, index|
         - company_name = job.company.present?  ? job.company.name.present?  ?  job.company.name : "" : ""
         - company_id = job.company.present? ?  job.company.id : ""
-        %tr
+        - klass = "danger" if (job.company.present? and job.company.invalid_address)
+        %tr{class: "#{klass}"}
+          %td= index + 1
           %td= job.title
           %td= company_name
           %td= job.city

@@ -1,4 +1,6 @@
 module Snovio
+  include HTTParty
+  default_timeout 10000
   @access_token_uri = "https://app.snov.io/oauth/access_token"
   @get_emails_uri = "https://app.snov.io/restapi/get-domain-emails-with-info"
   def self.get_access_token
@@ -11,12 +13,20 @@ module Snovio
   end
   def self.get_emails web_address , access_token
     web_address.slice! "www."
-    @result = HTTParty.post(@get_emails_uri,
-                            :body => {:domain => web_address,
-                                      :type => 'all',
-                                      :limit => '100'}.to_json ,
-                            :headers => {'Content-Type' => 'application/json',
-                                         'Accept' => 'application/json',
-                                         'Authorization' => "Bearer #{access_token}"})
+    # begin
+    #   puts "----first begin-------------"
+      @result = HTTParty.post(@get_emails_uri,
+                              :body => {:domain => web_address,
+                                        :type => 'all',
+                                        :limit => '100'}.to_json ,
+                              :headers => {'Content-Type' => 'application/json',
+                                           'Accept' => 'application/json',
+                                           'Authorization' => "Bearer #{access_token}"})
+    # rescue error
+
+        # raise "Something went wrong! /lib/snovio/* "
+      # puts "----------------#{error.inspect}=================="
+    # end
+
   end
 end

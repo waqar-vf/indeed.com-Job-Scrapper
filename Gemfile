@@ -27,6 +27,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+gem 'mechanize'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -41,7 +42,6 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
-  gem 'devise'
 end
 
 group :development do
@@ -51,8 +51,11 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'mechanize'
-  gem 'devise'
+  gem 'capistrano', '~> 3.9'
+  gem 'capistrano-rvm'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-passenger'
   
 
 end 
@@ -68,17 +71,8 @@ gem 'phantomjs'
 gem 'httparty'
 gem 'emailhunter'
 
-group :production do
-  # gem "haml-rails", "~> 1.0"
-  # gem 'bootstrap-sass', '~> 3.3.6'
-  # gem 'jquery-rails'
-  # gem 'poltergeist'
-  # gem 'phantomjs'
-  # gem 'phantom_mechanize'
-  # gem 'httparty'
-  # gem 'emailhunter'
-  gem 'mechanize'
-end
-
 gem "roo"
 gem 'rails_12factor', group: :production
+group :production,:staging do
+  gem 'passenger' , '~> 5.0.30
+'end

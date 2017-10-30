@@ -54,15 +54,15 @@ class HomeController < ApplicationController
 		@batch = Batch.find_by_id(params[:batch_id])
 		puts "Batch GOT"
 		begin
-			puts "begin"
+			puts "--------------------------------begin-----------------------------"
 			@batch.jobs.each do |job|
 				get_domain_search_emails job.company
 			end
 			render js: "get_all_emails_success();"
 		rescue => error
-			$!.backtrace
-			puts "----------------#{error.inspect}-------------"
-			render js: "something_went_wrong( 'Please make sure to get all domains first!' );"
+			# $!.backtrace
+			# puts "----------------#{error.inspect}-------------"
+			# render js: "something_went_wrong( 'Please make sure to get all domains first!' );"
 		end
 		respond_to do |format|
 			format.js
@@ -135,11 +135,18 @@ class HomeController < ApplicationController
 		sleep rand(secs)
 	end
 	def get_domain_search_emails company
-		if company.domain_search.present?
-			emails = company.domain_search.emails
-		else
-			emails = company.create_domain_search
+		# puts "----------inside get_domain_search_emails----------------"
+		begin
+			if company.domain_search.present?
+				# puts "---company domains search >> emails already exists --------------------------"
+				emails = company.domain_search.emails
+			else
+				# puts "-----going to call snovio to cast the spell for emails ------------"
+				emails = company.create_domain_search
+			end
+		rescue
+			company.update(invalid: true)
 		end
-		emails
+		# emails
 	end
 end
