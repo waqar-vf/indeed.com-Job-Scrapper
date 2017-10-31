@@ -52,9 +52,6 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
-  gem 'capistrano-passenger'
-  
-
 end 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -72,6 +69,6 @@ gem 'selenium-webdriver'
 
 gem "roo"
 gem 'rails_12factor', group: :production
-group :production,:staging do
-  gem 'passenger' , '~> 5.0.30
-'end
+# group :production,:staging do
+#   gem 'passenger' , '~> 5.0.30
+# 'end

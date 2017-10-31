@@ -2,7 +2,7 @@ role :app, %w{deploy@212.111.41.48}
 role :web, %w{deploy@212.111.41.48}
 role :db, %w{deploy@212.111.41.48}
 set :deploy_to, '/home/deploy/projects/salesbot'
-set :rvm_ruby_version, 'ruby-2.2.2@slingshots'
+set :rvm_ruby_version, 'ruby-2.4.2'
 set :branch, 'production'
 server '212.111.41.48', user: 'deploy', roles: %w{web app}, my_property: :my_value
 server '212.111.41.48',
