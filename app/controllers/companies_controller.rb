@@ -23,10 +23,10 @@ class CompaniesController < ApplicationController
   def import_csv
     begin
     Company.import(params[:file])
-    render js: "alert('import Successfull')"
+    render js: "$('#waiting_bar').modal('hide'); alert('import Successfull')"
     rescue => error
       puts "-------------+++++++#{error.inspect}-----------------------"
-      render js: "alert('Something went wrong')"
+      render js: "$('#waiting_bar').modal('hide'); alert('Something went wrong')"
     end
 
     # abort("=-------------------------")
