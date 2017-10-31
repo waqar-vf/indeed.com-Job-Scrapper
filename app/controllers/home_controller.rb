@@ -14,7 +14,8 @@ class HomeController < ApplicationController
 	    end
 	end
 	def get_domains
-		@jobs = Batch.last.jobs.includes(:company)
+		# batch = Batch.find_by_id(params[:batch_id])
+		@jobs = @active_batch.jobs.includes(:company)
 		begin
 			@jobs.each do |job|
 				if !job.company.web_address.present?
@@ -88,7 +89,7 @@ class HomeController < ApplicationController
 		search_form['q'] = params[:crawl][:keyword]
 		search_form['l'] = params[:crawl][:city]
 		results_page = search_form.submit
-		@batch =  Batch.find_or_create_by!(query: params[:crawl][:keyword].downcase , city: params[:crawl][:city].downcase)
+		@active_batch =  Batch.find_or_create_by!(query: params[:crawl][:keyword].downcase , city: params[:crawl][:city].downcase)
 		paginate_through results_page
 		i = 2
 		loop do
@@ -109,9 +110,9 @@ class HomeController < ApplicationController
 			posted_date  = 		job_section.search(".date").text.strip
 			title 		   = 		job_section.search(".jobtitle").text.strip
 			@company     =    Company.where(name: company).first_or_create do |comp|
-				comp.batch_id = @batch.id
+				comp.batch_id = @active_batch.id
 			end
-			job          =    Job.find_or_create_by!(company_id: @company.id ,  batch_id: @batch.id, city: city , posted_date: posted_date , title: title)
+			job          =    Job.find_or_create_by!(company_id: @company.id ,  batch_id: @active_batch.id, city: city , posted_date: posted_date , title: title)
 
 			@jobs << job
 		end

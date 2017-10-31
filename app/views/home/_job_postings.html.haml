@@ -1,12 +1,19 @@
+.col-lg-4.pull-right
+  .col-lg-3
+    %label.control-label.pull-right.kk{for: "Batches"} Select Batch
+  .col-lg-9
+    = select_tag "Batches", options_from_collection_for_select(@unscoped_batches, "id", "search_params",@active_batch.present? ? @active_batch.id : ""), class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
+%br
+%br
 .col-lg-6#settings
 
 %br
   -#= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
 - @jobs = jobs if (!@jobs.present? and defined?jobs and jobs.present?)
 - if @jobs.present?
-  = link_to "Get Domains" , get_domains_path , class: "btn btn-danger pull-right" , remote: :true , onclick: "return show_waiting_bar();"
 
   - if @active_batch.present?
+    = link_to "Get Domains" , get_domains_path(@active_batch.present? ? @active_batch.id : "") , class: "btn btn-danger pull-right" , remote: :true , onclick: "return show_waiting_bar();"
     = link_to "Get all Emails", get_all_emails_path(@active_batch.id), class: "btn btn-info pull-right" , remote: :true , onclick: "return show_waiting_bar();"
     =link_to "Download CSV" , csv_download_path(@active_batch.id, format: :csv) , class: "btn btn-primary pull-right"
 
