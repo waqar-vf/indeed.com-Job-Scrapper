@@ -10,7 +10,7 @@ server '212.111.41.48',
        roles: %w{web app},
        ssh_options: {
            user: 'deploy', # overrides user setting above
-           keys: %w(/home/muaaz/.ssh/id_rsa),
+           keys: %w(/home/waqar/.ssh/id_rsa),
            forward_agent: true,
            auth_methods: %w(publickey)
        }
