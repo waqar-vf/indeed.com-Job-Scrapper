@@ -13,8 +13,6 @@ module Snovio
   end
   def self.get_emails web_address , access_token
     web_address.slice! "www."
-    # begin
-    #   puts "----first begin-------------"
       @result = HTTParty.post(@get_emails_uri,
                               :body => {:domain => web_address,
                                         :type => 'all',
@@ -22,11 +20,5 @@ module Snovio
                               :headers => {'Content-Type' => 'application/json',
                                            'Accept' => 'application/json',
                                            'Authorization' => "Bearer #{access_token}"})
-    # rescue error
-
-        # raise "Something went wrong! /lib/snovio/* "
-      # puts "----------------#{error.inspect}=================="
-    # end
-
   end
 end

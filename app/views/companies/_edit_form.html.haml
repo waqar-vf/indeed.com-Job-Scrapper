@@ -1,0 +1,30 @@
+.modal-dialog{:role => "document"}
+  .modal-content
+    .modal-header
+      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} x
+      %h3.modal-title
+        Edit Company
+      .col-lg-10
+      -#= (link_to "Download CSV", job_csv_download_path(@job.id, format: :csv) , class: " pull")
+    .modal-body.emails-table
+      = form_for @company  do |f|
+        - if @company.errors.any?
+          #error_explanation
+            %h2= "#{pluralize(@company.errors.count, "error")} prohibited this company from being saved:"
+            %ul
+              - @company.errors.full_messages.each do |message|
+                %li= message
+
+        .field1
+          = f.label :name , class: "control-label"
+          = f.text_field :name, class: "form-control"
+        .field1
+          = f.label :web_address
+          = f.text_field :web_address ,class: "form-control"
+        .checkbox.field
+          %label
+            = f.check_box :invalid_address, class: "checkbox"
+            %b Mark Invalid
+        .actions1
+          = f.submit 'Update',class: "btn btn-primary "

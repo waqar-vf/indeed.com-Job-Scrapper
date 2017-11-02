@@ -1,6 +1,7 @@
 class Batch < ApplicationRecord
 	has_many :jobs ,dependent: :destroy
-	has_many :companies
+	has_many :batch_companies
+	has_many :companies , through: :batch_companies
 	def search_params
 		# "#{query} , #{city}"
 		if batch_type == "import"

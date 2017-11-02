@@ -1,8 +1,12 @@
 .col-lg-4.pull-right
   .col-lg-3
     %label.control-label.pull-right.kk{for: "Batches"} Select Batch
-  .col-lg-9
-    = select_tag "Batches", options_from_collection_for_select(@unscoped_batches, "id", "search_params",@active_batch.present? ? @active_batch.id : ""), class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
+  .col-lg-7
+    = select_tag "Batches", options_from_collection_for_select(@unscoped_batches, "id", "search_params",@active_batch.present? ? @active_batch.id : ""),
+     class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
+  .col-lg-2
+    = link_to refresh_batch_path(keyword: @active_batch.query ,city: @active_batch.city),remote: :true,onclick: "return show_waiting_bar();", class: "btn btn-default" ,title: "Refresh Batch" do
+      %span{class: "glyphicon glyphicon-refresh"}
 %br
 %br
 .col-lg-6#settings
@@ -26,17 +30,17 @@
     %thead
       %tr
         %th Sr#
-        %th Title
+        %th Job Title
         %th Company
         -#%th Web Address
         %th City
-        %th State
         %th Posted date
         %th Company Domain
         %th See Contacts
-        %th
+        %th CSV
     %tbody
-      - @jobs.each_with_index do |job, index|
+      -#- @jobs.sort()
+      - @jobs.sort_by(&:posted_date).each_with_index do |job, index|
         - company_name = job.company.present?  ? job.company.name.present?  ?  job.company.name : "" : ""
         - company_id = job.company.present? ?  job.company.id : ""
         - klass = "danger" if (job.company.present? and job.company.invalid_address)
@@ -45,12 +49,13 @@
           %td= job.title
           %td= company_name
           %td= job.city
-          %td= job.state
           %td= job.posted_date
           %td
             = job.company.present?  ? (link_to job.company.web_address.to_s , job.company.web_address.to_s ,target: :_blank) : ""
-            = job.company.present?  ? (link_to "Edit Company", edit_company_path(company_id), class: "btn btn-warning pull-right ") : ""
+            = job.company.present?  ? (link_to "Edit Company", edit_company_path(company_id),remote: :true, class: "btn btn-warning pull-right ") : ""
           %td
-            = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company_id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
+            = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company_id , job.id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
+          %td
+            = (link_to "Download", job_csv_download_path(job.id, format: :csv) , class: "") if job.has_emails?
 
   %br

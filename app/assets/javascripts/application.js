@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require bootstrap-sprockets
+//= require bootstrap-typeahead-rails
 //= require rails-ujs
 
 //=# require_tree .
@@ -36,4 +37,8 @@ function something_went_wrong(stack_trace) {
 function get_all_emails_success() {
     alert("Emails are saved successfully in system for currently active batch. \r\n You can download csv now.")
     $("#waiting_bar").modal("hide")
+}
+function enable_button(id) {
+    $("#"+id).attr("disabled" , false)
+    
 }

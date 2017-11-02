@@ -19,6 +19,12 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
+    respond_to do |format|
+      format.js do
+
+      end
+      format.html
+    end
   end
   def import_csv
     begin
@@ -29,7 +35,6 @@ class CompaniesController < ApplicationController
       render js: "$('#waiting_bar').modal('hide'); alert('Something went wrong')"
     end
 
-    # abort("=-------------------------")
   end
   # POST /companies
   # POST /companies.json
@@ -52,11 +57,13 @@ class CompaniesController < ApplicationController
   def update
     respond_to do |format|
       if @company.update(company_params)
-        format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+        format.html { redirect_to root_path, notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
+        format.js {  redirect_to root_path, notice: 'Company was successfully updated.' }
       else
         format.html { render :edit }
         format.json { render json: @company.errors, status: :unprocessable_entity }
+
       end
     end
   end

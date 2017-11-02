@@ -4,20 +4,18 @@
 -#<%= CSV.generate_line([user.name, user.email]) -%>
 -#<%- end -%>
 
-- headers = ["Title" ,"Company", "City" , "Posted Data" , "Email" , "Position" , "Status", "First Name" , "Last Name", "Twitter","Email Type"]
-= CSV.generate_line headers
+= ["Job Title" ,"Company", "City" , "Posted Data" ,"First Name" , "Last Name", "Position","Email" ,"Status", "Twitter","Email Type"].to_csv( row_sep: nil )
 - @jobs.each do |job|
   -if job.company.present? and job.company.domain_search.present?
-    =  [job.title.present? ? job.title.tr('^A-Za-z0-9 ', '') : "-",
-                          job.company.name.present?  ? job.company.name.tr('^A-Za-z0-9 ', '') : "",
-                         job.city.present? ? job.city.tr('^A-Za-z0-9 ', ''): "-",
-                         job.posted_date.present? ?  job.posted_date.tr('^A-Za-z0-9 ', ''): "-"].to_csv(row_sep: nil)
     - job.company.domain_search.emails.each do |email|
-      = ["-","-","-","-",
-                                  email.email.present? ? email.email.to_s: "-"  ,
-                                  email.position.present? ? email.position.to_s.tr('^A-Za-z0-9 ', ''): "-" ,
-                                  email.status.present? ? email.status.to_s.tr('^A-Za-z0-9 ', '')  : "-",
-                                  email.first_name.present? ? email.first_name.to_s.tr('^A-Za-z0-9 ', '')  : "-",
-                                  email.last_name.present? ? email.last_name.to_s.tr('^A-Za-z0-9 ', '') : "-",
-                                  email.twitter.present? ? email.twitter.to_s.tr('^A-Za-z0-9 ', ''): "-",
-                                  email.address_type.present? ? email.address_type.to_s.tr('^A-Za-z0-9 ', '') : "-" ].to_csv( row_sep: nil )
+      = [job.title.present? ? job.title.tr('^A-Za-z0-9 ', '') : "-",
+         job.company.name.present?  ? job.company.name.tr('^A-Za-z0-9 ', '') : "",
+         job.city.present? ? job.city.tr('^A-Za-z0-9 ', ''): "-",
+         job.posted_date.present? ?  job.posted_date.tr('^A-Za-z0-9 ', ''): "-",
+            email.first_name.present? ? email.first_name.to_s.tr('^A-Za-z0-9 ', '')  : "-",
+            email.last_name.present? ? email.last_name.to_s.tr('^A-Za-z0-9 ', '') : "-",
+            email.position.present? ? email.position.to_s.tr('^A-Za-z0-9 ', ''): "-" ,
+            email.email.present? ? email.email.to_s: "-"  ,
+            email.status.present? ? email.status.to_s.tr('^A-Za-z0-9 ', '')  : "-",
+            email.address_type.present? ? email.address_type.to_s.tr('^A-Za-z0-9 ', '') : "-",
+            email.twitter.present? ? email.twitter.to_s.tr('^A-Za-z0-9 ', ''): "-", ].to_csv( row_sep: nil )

@@ -4,17 +4,16 @@
     .row.col-lg-5
       = form_tag(crawl_path , remote: :true , id: "search_form") do
         .col-lg-4
-          = text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
+          = text_field_tag 'keyword' ,"", class: 'form-control' , placeholder: "Enter Keyword"
         .col-lg-5
-          = text_field_tag 'crawl[city]' ,"", class: 'form-control' , placeholder: "Enter City/State"
+          = text_field_tag 'city' ,"", class: 'form-control' , placeholder: "Enter City/State"
         = submit_tag 'Get Started' , class: "btn btn-success" , onclick: "return show_waiting_bar();",data: {disable_with: 'loading...'}
     .row.col-lg-3
-      = form_tag import_csv_path, multipart: true , remote: :true do
+      = form_tag import_csv_path, multipart: true ,id: "import_csv" ,remote: :true do
         .col-lg-5
-          = file_field_tag :file , class: "btn "
+          = file_field_tag :file , class: "btn " , onchange: "enable_button('import_csv_submit');"
         .col-lg-2
         .col-lg-4.pull-right
-          = submit_tag "Import CSV" , class: "btn" , onclick: "return show_waiting_bar();"
+          = submit_tag "Import CSV" , class: "btn" , id: "import_csv_submit"  ,disabled: true, onclick: "return show_waiting_bar();"
     #job_postings
       = render :partial => "home/job_postings" , locals:{jobs: @batches.last.present?  ? @batches.last.jobs : []  }
-		

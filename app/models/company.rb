@@ -2,16 +2,14 @@ require 'snovio'
 class Company < ApplicationRecord
   has_many :jobs ,dependent: :destroy
   has_one :domain_search ,dependent: :destroy
-  belongs_to :batch
+  has_many :batch_companies
+  has_many :batches , through: :batch_companies
+
   def create_domain_search
     access_token = Snovio.get_access_token
-    self.domain_search = DomainSearch.find_or_initialize_by(domain: self.trim_web_address) #find_or_initialize_by here WAQAR
+    self.domain_search = DomainSearch.find_or_initialize_by(domain: self.trim_web_address)
     domain_search = self.domain_search
-    # WARING please check if API call is needed here WAQAR
-    #At snovio same domain address can be called multiple times without affecting remaining credit
-    puts "+++++++++++++++++++++++++++++++++++JUST CALLING SNOVIO----------------------"
     @emails = Snovio.get_emails domain_search.domain , access_token
-    puts "+++++++++++++++++ RETURNED FROM SNOVIO CALL======================"
     domains_search_emails = domain_search.emails
     @emails["emails"].each do |email|
       if !(domains_search_emails.include? "#{email}")

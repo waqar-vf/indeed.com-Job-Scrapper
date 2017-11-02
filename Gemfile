@@ -72,3 +72,5 @@ gem 'rails_12factor', group: :production
 group :production,:staging do
   gem 'passenger' , '~> 5.0.30
 'end
+gem 'jquery-ui-rails'
+gem 'bootstrap-typeahead-rails'

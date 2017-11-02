@@ -7,19 +7,19 @@ class HomeController < ApplicationController
 	def index
     @jobs = @active_batch.present? ? @active_batch.jobs : nil
 	end
-	def crawl 
+	def crawl
+		# debugger
 		get_data params
 		respond_to do |format|
 	      format.js { render :partial => "crawl" }
 	    end
 	end
 	def get_domains
-		# batch = Batch.find_by_id(params[:batch_id])
 		@jobs = @active_batch.jobs.includes(:company)
 		begin
 			@jobs.each do |job|
 				if !job.company.web_address.present?
-					delay 1..2
+					delay 1
 					link = crawl_company_address job.company.name
 					job.company.update(web_address: link)
 				end
@@ -45,6 +45,7 @@ class HomeController < ApplicationController
 		end
 	end
 	def get_emails
+		@job = Job.find_by_id(params[:job_id])
 		@company = Company.find(params[:id])
 		@emails = get_domain_search_emails @company
 		respond_to do |format|
@@ -53,17 +54,13 @@ class HomeController < ApplicationController
 	end
 	def get_all_emails
 		@batch = Batch.find_by_id(params[:batch_id])
-		puts "Batch GOT"
 		begin
-			puts "--------------------------------begin-----------------------------"
 			@batch.jobs.each do |job|
 				get_domain_search_emails job.company
 			end
 			render js: "get_all_emails_success();"
 		rescue => error
-			# $!.backtrace
-			# puts "----------------#{error.inspect}-------------"
-			# render js: "something_went_wrong( 'Please make sure to get all domains first!' );"
+
 		end
 		respond_to do |format|
 			format.js
@@ -76,20 +73,35 @@ class HomeController < ApplicationController
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"Contacts-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
-      end
 
       end
+
+		end
+	end
+	def job_csv_download
+		@jobs = []
+		job = Job.find_by_id(params[:job_id])
+		puts "--------#{job.inspect}------"
+		@jobs << job
+		respond_to do |format|
+			format.csv do
+				headers['Content-Disposition'] = "attachment; filename=\"Contact-list.csv\""
+				headers['Content-Type'] ||= 'text/csv'
+				render 'csv_download'
+			end
+		end
 	end
 	private
 
 	def get_data params
+		puts "----------------------#{params.inspect}------------------------------"
 		@jobs  = []
 		home_page = @agent.get(job_site_url)
 		search_form = home_page.forms.first
-		search_form['q'] = params[:crawl][:keyword]
-		search_form['l'] = params[:crawl][:city]
+		search_form['q'] = params[:keyword]
+		search_form['l'] = params[:city]
 		results_page = search_form.submit
-		@active_batch =  Batch.find_or_create_by!(query: params[:crawl][:keyword].downcase , city: params[:crawl][:city].downcase)
+		@active_batch =  Batch.find_or_create_by!(query: params[:keyword].downcase , city: params[:city].downcase)
 		paginate_through results_page
 		i = 2
 		loop do
@@ -137,18 +149,15 @@ class HomeController < ApplicationController
 		sleep rand(secs)
 	end
 	def get_domain_search_emails company
-		# puts "----------inside get_domain_search_emails----------------"
 		begin
 			if company.domain_search.present?
-				# puts "---company domains search >> emails already exists --------------------------"
 				emails = company.domain_search.emails
 			else
-				# puts "-----going to call snovio to cast the spell for emails ------------"
 				emails = company.create_domain_search
 			end
 		rescue
 			company.update(invalid: true)
 		end
-		# emails
+		emails
 	end
 end
