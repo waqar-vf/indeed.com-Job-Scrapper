@@ -60,7 +60,7 @@ class HomeController < ApplicationController
 			end
 			render js: "get_all_emails_success();"
 		rescue => error
-
+			render js: "something_went_wrong('Please make sure to get all domains first.');"
 		end
 		respond_to do |format|
 			format.js
@@ -101,7 +101,7 @@ class HomeController < ApplicationController
 		search_form['q'] = params[:keyword]
 		search_form['l'] = params[:city]
 		results_page = search_form.submit
-		@active_batch =  Batch.find_or_create_by!(query: params[:keyword].downcase , city: params[:city].downcase)
+		@active_batch =  Batch.unscoped.find_or_create_by!(query: params[:keyword].downcase , city: params[:city].downcase)
 		paginate_through results_page
 		i = 2
 		loop do
@@ -142,7 +142,7 @@ class HomeController < ApplicationController
 	def set_batch
     @batches =  Batch.all
 		@unscoped_batches = Batch.unscoped.all
-    @active_batch = params[:batch_id].present? ? Batch.find_by_id(params[:batch_id]) :  @batches.last
+    @active_batch = params[:batch_id].present? ? Batch.unscoped.find_by_id(params[:batch_id]) :  @batches.last
 
 	end
 	def delay secs

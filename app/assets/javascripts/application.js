@@ -33,10 +33,18 @@ function something_went_wrong(stack_trace) {
     }
     alert('Something went wrong. Please try again later \r\n Stack Trace:' + stack_trace);
     $("#waiting_bar").modal("hide")
+    location.reload()
+}
+function something_went_wring_with_emails(msg) {
+    alert('Something went wrong. Please try again later \r\n' + msg)
+    $("#waiting_bar").modal("hide")
+    location.reload()
+
 }
 function get_all_emails_success() {
     alert("Emails are saved successfully in system for currently active batch. \r\n You can download csv now.")
     $("#waiting_bar").modal("hide")
+    location.reload();
 }
 function enable_button(id) {
     $("#"+id).attr("disabled" , false)

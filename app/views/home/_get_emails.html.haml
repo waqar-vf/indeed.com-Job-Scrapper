@@ -5,8 +5,9 @@
         %span{"aria-hidden" => "true"} x
       %h4.modal-title
         = (@emails.first.present?  ? @emails.first.domain_search.domain.to_s : "<empty>" )+ " Contacts"
-      .col-lg-10
-      = (link_to "Download CSV", job_csv_download_path(@job.id, format: :csv) , class: " pull")
+      - if @jobs.present?
+        .col-lg-10
+        = (link_to "Download CSV", job_csv_download_path(@job.id, format: :csv) , class: " pull")
     .modal-body.emails-table
       %table.table.table-striped
         %thead

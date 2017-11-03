@@ -5,57 +5,99 @@
     = select_tag "Batches", options_from_collection_for_select(@unscoped_batches, "id", "search_params",@active_batch.present? ? @active_batch.id : ""),
      class: "form-control pull-right",onchange: "return get_batch(this);",:prompt => "Select Batch"
   .col-lg-2
-    = link_to refresh_batch_path(keyword: @active_batch.query ,city: @active_batch.city),remote: :true,onclick: "return show_waiting_bar();", class: "btn btn-default" ,title: "Refresh Batch" do
-      %span{class: "glyphicon glyphicon-refresh"}
+    - if @active_batch.present?
+      = link_to refresh_batch_path(keyword: @active_batch.query ,city: @active_batch.city),remote: :true,onclick: "return show_waiting_bar();", class: "btn btn-default" ,title: "Refresh Batch" do
+        %span{class: "glyphicon glyphicon-refresh"}
 %br
 %br
 .col-lg-6#settings
 
 %br
-  -#= text_field_tag 'crawl[keyword]' ,"", class: 'form-control' , placeholder: "Enter Keyword"
-- @jobs = jobs if (!@jobs.present? and defined?jobs and jobs.present?)
-- if @jobs.present?
-
-  - if @active_batch.present?
+- if @active_batch.present? and @active_batch.batch_type == "search"
+  - @jobs = jobs if (!@jobs.present? and defined?jobs and jobs.present?)
+  - if @jobs.present?
     = link_to "Get Domains" , get_domains_path(@active_batch.present? ? @active_batch.id : "") , class: "btn btn-danger pull-right" , remote: :true , onclick: "return show_waiting_bar();"
     = link_to "Get all Emails", get_all_emails_path(@active_batch.id), class: "btn btn-info pull-right" , remote: :true , onclick: "return show_waiting_bar();"
     =link_to "Download CSV" , csv_download_path(@active_batch.id, format: :csv) , class: "btn btn-primary pull-right"
 
+    %h2.col-lg-6
+      = @jobs.count
+      Jobs for
+      %i
+        = @jobs.first.batch.search_params
+        (
+        = @jobs.first.batch.updated_at.strftime("%F %H:%M %p")
+        )
+    .col-lg-1
+
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Sr#
+          %th Job Title
+          %th Company
+          %th City
+          %th Posted date
+          %th Company Domain
+          %th See Contacts
+          %th CSV
+      %tbody
+        - @jobs.sort_by(&:posted_date).each_with_index do |job, index|
+          - company_name = job.company.present?  ? job.company.name.present?  ?  job.company.name : "" : ""
+          - company_id = job.company.present? ?  job.company.id : ""
+          - klass = "danger" if (job.company.present? and job.company.invalid_address)
+          %tr{class: "#{klass}"}
+            %td= index + 1
+            %td= job.title
+            %td= company_name
+            %td= job.city
+            %td= job.posted_date
+            %td
+              = job.company.present?  ? (link_to job.company.web_address.to_s , job.company.web_address.to_s ,target: :_blank) : ""
+              = job.company.present?  ? (link_to "Edit Company", edit_company_path(company_id, active_batch: @active_batch.id),remote: :true, class: "pull-right ") : ""
+            %td
+              = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company_id , job.id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
+            %td
+              = (link_to "Download", job_csv_download_path(job.id, format: :csv) , class: "") if job.has_emails?
+
+    -#%br
+- elsif @active_batch.present? and @active_batch.batch_type == "import"
   %h2.col-lg-6
-    = @jobs.count
-    Jobs for
+    = @active_batch.companies.count
+    Companies for import csv
     %i
-      = @jobs.first.batch.search_params
+      (
+      = @active_batch.updated_at.strftime("%F %H:%M %p")
+      )
+
   %table.table.table-striped
     %thead
       %tr
         %th Sr#
-        %th Job Title
+        -#%th Job Title
         %th Company
-        -#%th Web Address
-        %th City
-        %th Posted date
+        -#%th City
+        -#%th Posted date
         %th Company Domain
         %th See Contacts
-        %th CSV
+        -#%th CSV
     %tbody
-      -#- @jobs.sort()
-      - @jobs.sort_by(&:posted_date).each_with_index do |job, index|
-        - company_name = job.company.present?  ? job.company.name.present?  ?  job.company.name : "" : ""
-        - company_id = job.company.present? ?  job.company.id : ""
-        - klass = "danger" if (job.company.present? and job.company.invalid_address)
+      - @active_batch.companies.sort_by(&:created_at).each_with_index do |company, index|
+        -#- company_name = company.present?  ? company.name.present?  ?  job.company.name : "" : ""
+        -#- company_id = job.company.present? ?  job.company.id : ""
+        - klass = "danger" if (company.present? and company.invalid_address)
         %tr{class: "#{klass}"}
           %td= index + 1
-          %td= job.title
-          %td= company_name
-          %td= job.city
-          %td= job.posted_date
+          -#%td= job.title
+          %td= company.name
+          -#%td= job.city
+          -#%td= job.posted_date
           %td
-            = job.company.present?  ? (link_to job.company.web_address.to_s , job.company.web_address.to_s ,target: :_blank) : ""
-            = job.company.present?  ? (link_to "Edit Company", edit_company_path(company_id),remote: :true, class: "btn btn-warning pull-right ") : ""
+            = company.present?  ? (link_to company.web_address.to_s , company.web_address.to_s ,target: :_blank) : ""
+            = company.present?  ? (link_to "Edit Company", edit_company_path(company.id, active_batch: @active_batch.id),remote: :true, class: "pull-right ") : ""
           %td
-            = job.company.present?  ? job.company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company_id , job.id), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
-          %td
-            = (link_to "Download", job_csv_download_path(job.id, format: :csv) , class: "") if job.has_emails?
+            = company.present?  ? company.web_address.present?  ? ( link_to "See Emails" ,get_emails_path(company.id , ""), remote: :true ,onclick: "return show_waiting_bar();") : "" : ""
+          -#%td
+            -#= (link_to "Download", job_csv_download_path(job.id, format: :csv) , class: "") if job.has_emails?
 
   %br

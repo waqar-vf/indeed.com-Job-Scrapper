@@ -19,6 +19,7 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
+    @active_batch = Batch.unscoped.find_by_id(params[:active_batch])
     respond_to do |format|
       format.js do
 
@@ -55,11 +56,12 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1
   # PATCH/PUT /companies/1.json
   def update
+    @active_batch = Batch.unscoped.find_by_id(params[:batch_id])
     respond_to do |format|
       if @company.update(company_params)
-        format.html { redirect_to root_path, notice: 'Company was successfully updated.' }
+        format.html { redirect_to active_batch_path(params[:batch_id]), notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
-        format.js {  redirect_to root_path, notice: 'Company was successfully updated.' }
+        format.js {  redirect_to active_batch_path(params[:batch_id]), notice: 'Company was successfully updated.' }
       else
         format.html { render :edit }
         format.json { render json: @company.errors, status: :unprocessable_entity }
@@ -86,6 +88,6 @@ class CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :web_address, :invalid_address)
+      params.require(:company).permit(:name, :web_address, :invalid_address, :active_batch)
     end
 end
